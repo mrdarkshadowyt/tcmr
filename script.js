@@ -7,10 +7,29 @@ const GOOGLE_SCRIPT_URL =
 
 
 // ==========================================
+// MAIN PAGE URL
+// ==========================================
+//
+// CHANGE THIS if your main page has a different URL.
+//
+
+const MAIN_PAGE_URL = "index.html";
+
+
+// ==========================================
+// DISCORD SERVER URL
+// ==========================================
+
+const DISCORD_URL =
+    "https://discord.gg/fHHMKfqKj";
+
+
+// ==========================================
 // GET FORM ELEMENTS
 // ==========================================
 
-const form = document.getElementById("teamForm");
+const form =
+    document.getElementById("teamForm");
 
 const submitButton =
     document.getElementById("submitButton");
@@ -23,220 +42,7 @@ const successMessage =
 
 
 // ==========================================
-// CREATE TEST BUTTON
-// ==========================================
-
-const testButton = document.createElement("button");
-
-testButton.type = "button";
-
-testButton.id = "testSheetButton";
-
-testButton.innerText =
-    "🧪 TEST GOOGLE SHEETS";
-testButton.style.display = "none";
-
-
-// Style the test button
-testButton.style.marginTop = "15px";
-testButton.style.background =
-    "linear-gradient(90deg, #333333, #555555)";
-testButton.style.fontSize = "18px";
-testButton.style.height = "50px";
-testButton.style.cursor = "pointer";
-
-
-// Put test button below the real submit button
-if (submitButton) {
-
-    submitButton.parentNode.insertBefore(
-        testButton,
-        submitButton.nextSibling
-    );
-
-}
-
-
-// ==========================================
-// TEST GOOGLE SHEETS
-// ==========================================
-
-testButton.addEventListener(
-    "click",
-    async function () {
-
-        testButton.disabled = true;
-
-        testButton.innerText =
-            "TESTING...";
-
-
-        // ======================================
-        // TEST DATA
-        // ======================================
-
-        const testData = {
-
-            teamName:
-                "TEST TEAM",
-
-            teamLogo:
-                "",
-
-            player1Name:
-                "Test Leader",
-
-            player1IGN:
-                "TestLeader",
-
-            player1Rank:
-                "Eternity",
-
-            contact:
-                "9999999999",
-
-
-            player2Name:
-                "Test Player 2",
-
-            player2IGN:
-                "TestPlayer2",
-
-            player2Rank:
-                "Diamond",
-
-
-            player3Name:
-                "Test Player 3",
-
-            player3IGN:
-                "TestPlayer3",
-
-            player3Rank:
-                "Gold",
-
-
-            player4Name:
-                "Test Player 4",
-
-            player4IGN:
-                "TestPlayer4",
-
-            player4Rank:
-                "Platinum",
-
-
-            player5Name:
-                "Test Player 5",
-
-            player5IGN:
-                "TestPlayer5",
-
-            player5Rank:
-                "Grandmaster",
-
-
-            player6Name:
-                "Test Player 6",
-
-            player6IGN:
-                "TestPlayer6",
-
-            player6Rank:
-                "Celestial",
-
-
-            sub1Name:
-                "Test Substitute 1",
-
-            sub1IGN:
-                "TestSub1",
-
-            sub1Rank:
-                "Silver",
-
-
-            sub2Name:
-                "Test Substitute 2",
-
-            sub2IGN:
-                "TestSub2",
-
-            sub2Rank:
-                "Bronze"
-
-        };
-
-
-        // ======================================
-        // SEND TEST DATA
-        // ======================================
-
-        try {
-
-            await fetch(
-                GOOGLE_SCRIPT_URL,
-                {
-
-                    method: "POST",
-
-                    mode: "no-cors",
-
-                    headers: {
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
-                    },
-
-                    body:
-                        JSON.stringify(testData)
-
-                }
-            );
-
-
-            // ==================================
-            // TEST RESULT
-            // ==================================
-
-            alert(
-                "TEST DATA SENT!\n\n" +
-                "Now open your Google Sheet and check Sheet1.\n\n" +
-                "Look for a row with:\n" +
-                "Team Name: TEST TEAM"
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Test error:",
-                error
-            );
-
-
-            alert(
-                "TEST FAILED!\n\n" +
-                "Check your Google Apps Script deployment."
-            );
-
-        }
-
-
-        // ======================================
-        // RESET BUTTON
-        // ======================================
-
-        testButton.disabled = false;
-
-        testButton.innerText =
-            "🧪 TEST GOOGLE SHEETS";
-
-    }
-);
-
-
-// ==========================================
-// REAL FORM SUBMISSION
+// FORM SUBMISSION
 // ==========================================
 
 if (form) {
@@ -248,22 +54,21 @@ if (form) {
             event.preventDefault();
 
 
-            // ==================================
+            // ======================================
             // VALIDATE FORM
-            // ==================================
+            // ======================================
 
             if (!form.checkValidity()) {
 
                 form.reportValidity();
 
                 return;
-
             }
 
 
-            // ==================================
+            // ======================================
             // BUTTON LOADING STATE
-            // ==================================
+            // ======================================
 
             if (submitButton) {
 
@@ -283,9 +88,9 @@ if (form) {
             }
 
 
-            // ==================================
-            // COLLECT FORM DATA
-            // ==================================
+            // ======================================
+            // GET FORM DATA
+            // ======================================
 
             const formData =
                 new FormData(form);
@@ -312,16 +117,15 @@ if (form) {
             );
 
 
-            // ==================================
-            // SEND TO GOOGLE SHEETS
-            // ==================================
+            // ======================================
+            // SEND DATA TO GOOGLE SHEETS
+            // ======================================
 
             try {
 
                 await fetch(
                     GOOGLE_SCRIPT_URL,
                     {
-
                         method: "POST",
 
                         mode: "no-cors",
@@ -333,13 +137,12 @@ if (form) {
 
                         body:
                             JSON.stringify(data)
-
                     }
                 );
 
 
                 // ==================================
-                // SHOW SUCCESS
+                // REGISTRATION SUCCESS
                 // ==================================
 
                 form.style.display =
@@ -351,8 +154,152 @@ if (form) {
                     successMessage.style.display =
                         "block";
 
+
+                    // ==================================
+                    // BACK TO MAIN PAGE LINK
+                    // ==================================
+
+                    const backLink =
+                        document.createElement("a");
+
+                    backLink.href =
+                        MAIN_PAGE_URL;
+
+                    backLink.innerText =
+                        "← BACK TO MAIN PAGE";
+
+                    backLink.style.display =
+                        "inline-block";
+
+                    backLink.style.marginTop =
+                        "25px";
+
+                    backLink.style.color =
+                        "#8b5cff";
+
+                    backLink.style.fontSize =
+                        "18px";
+
+                    backLink.style.fontWeight =
+                        "700";
+
+                    backLink.style.textDecoration =
+                        "none";
+
+                    backLink.style.letterSpacing =
+                        "1px";
+
+
+                    // Hover effect
+
+                    backLink.addEventListener(
+                        "mouseenter",
+                        function () {
+
+                            backLink.style.textDecoration =
+                                "underline";
+
+                        }
+                    );
+
+
+                    backLink.addEventListener(
+                        "mouseleave",
+                        function () {
+
+                            backLink.style.textDecoration =
+                                "none";
+
+                        }
+                    );
+
+
+                    // ==================================
+                    // DISCORD LINK
+                    // ==================================
+
+                    const discordLink =
+                        document.createElement("a");
+
+                    discordLink.href =
+                        DISCORD_URL;
+
+                    discordLink.innerText =
+                        "JOIN OUR DISCORD";
+
+                    discordLink.target =
+                        "_blank";
+
+                    discordLink.rel =
+                        "noopener noreferrer";
+
+                    discordLink.style.display =
+                        "inline-block";
+
+                    discordLink.style.marginTop =
+                        "15px";
+
+                    discordLink.style.marginLeft =
+                        "15px";
+
+                    discordLink.style.color =
+                        "#5865F2";
+
+                    discordLink.style.fontSize =
+                        "18px";
+
+                    discordLink.style.fontWeight =
+                        "700";
+
+                    discordLink.style.textDecoration =
+                        "none";
+
+                    discordLink.style.letterSpacing =
+                        "1px";
+
+
+                    // Hover effect
+
+                    discordLink.addEventListener(
+                        "mouseenter",
+                        function () {
+
+                            discordLink.style.textDecoration =
+                                "underline";
+
+                        }
+                    );
+
+
+                    discordLink.addEventListener(
+                        "mouseleave",
+                        function () {
+
+                            discordLink.style.textDecoration =
+                                "none";
+
+                        }
+                    );
+
+
+                    // ==================================
+                    // ADD LINKS TO SUCCESS MESSAGE
+                    // ==================================
+
+                    successMessage.appendChild(
+                        backLink
+                    );
+
+                    successMessage.appendChild(
+                        discordLink
+                    );
+
                 }
 
+
+                // ==================================
+                // SCROLL TO SUCCESS MESSAGE
+                // ==================================
 
                 window.scrollTo({
                     top: 0,
@@ -367,6 +314,10 @@ if (form) {
                     error
                 );
 
+
+                // ==================================
+                // SHOW ERROR
+                // ==================================
 
                 if (errorMessage) {
 
