@@ -55,11 +55,9 @@ const rankValues = {
     "Celestial 2": 20,
     "Celestial 1": 21,
 
-    "Eternity 3": 22,
-    "Eternity 2": 23,
-    "Eternity 1": 24,
+    "Eternity ": 22,
 
-    "One Above All ": 25
+    "One Above All ": 23
 };
 
 
