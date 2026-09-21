@@ -27,50 +27,19 @@ const logoInput =
 
 
 // ==========================================
-// LOGO PREVIEW ELEMENTS
-// ==========================================
-
-const logoPreview =
-    document.getElementById("logoPreview");
-
-const uploadBox =
-    document.querySelector(".logo-upload-box");
-
-
-// ==========================================
-// LOGO VALIDATION + PREVIEW
+// LOGO VALIDATION
 // ==========================================
 
 logoInput.addEventListener("change", function () {
 
     const file = this.files[0];
 
-
-    // ------------------------------
-    // NO FILE SELECTED
-    // ------------------------------
-
     if (!file) {
-
-        if (uploadBox) {
-            uploadBox.classList.remove("has-image");
-        }
-
-        if (logoPreview) {
-            logoPreview.src = "";
-        }
-
         return;
     }
 
-
-    // ------------------------------
-    // MAX FILE SIZE
-    // ------------------------------
-
     const maxSize =
         10 * 1024 * 1024;
-
 
     if (file.size > maxSize) {
 
@@ -80,21 +49,9 @@ logoInput.addEventListener("change", function () {
 
         this.value = "";
 
-        if (uploadBox) {
-            uploadBox.classList.remove("has-image");
-        }
-
-        if (logoPreview) {
-            logoPreview.src = "";
-        }
-
         return;
     }
 
-
-    // ------------------------------
-    // CHECK IMAGE TYPE
-    // ------------------------------
 
     if (!file.type.startsWith("image/")) {
 
@@ -104,46 +61,8 @@ logoInput.addEventListener("change", function () {
 
         this.value = "";
 
-        if (uploadBox) {
-            uploadBox.classList.remove("has-image");
-        }
-
-        if (logoPreview) {
-            logoPreview.src = "";
-        }
-
         return;
     }
-
-
-    // ------------------------------
-    // CREATE IMAGE PREVIEW
-    // ------------------------------
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload = function (event) {
-
-        if (logoPreview) {
-
-            logoPreview.src =
-                event.target.result;
-        }
-
-
-        if (uploadBox) {
-
-            uploadBox.classList.add(
-                "has-image"
-            );
-        }
-
-    };
-
-
-    reader.readAsDataURL(file);
 
 });
 
@@ -159,9 +78,9 @@ form.addEventListener(
         event.preventDefault();
 
 
-        // ==================================
+        // ------------------------------
         // VALIDATE FORM
-        // ==================================
+        // ------------------------------
 
         if (!form.checkValidity()) {
 
@@ -171,9 +90,9 @@ form.addEventListener(
         }
 
 
-        // ==================================
+        // ------------------------------
         // BUTTON STATE
-        // ==================================
+        // ------------------------------
 
         submitButton.disabled = true;
 
@@ -184,9 +103,9 @@ form.addEventListener(
             "none";
 
 
-        // ==================================
+        // ------------------------------
         // COLLECT FORM DATA
-        // ==================================
+        // ------------------------------
 
         const formData =
             new FormData(form);
@@ -197,39 +116,23 @@ form.addEventListener(
         formData.forEach(
             (value, key) => {
 
+                if (value instanceof File) {
 
-                // ------------------------------
-                // FILE INPUT
-                // ------------------------------
+                    if (value.name) {
 
-             if (value instanceof File) {
+                        data[key] =
+                            value.name;
 
-    if (value.name) {
+                    } else {
 
-        const base64 = await fileToBase64(value);
+                        data[key] = "";
 
-        data[key] = {
-            fileName: value.name,
-            mimeType: value.type,
-            base64: base64
-        };
+                    }
 
-    } else {
-
-        data[key] = "";
-
-    }
-
-}
-
-
-                // ------------------------------
-                // NORMAL INPUT
-                // ------------------------------
-
-                else {
+                } else {
 
                     data[key] = value;
+
                 }
 
             }
@@ -260,9 +163,9 @@ form.addEventListener(
             );
 
 
-            // ==================================
+            // ------------------------------
             // SHOW SUCCESS
-            // ==================================
+            // ------------------------------
 
             form.style.display =
                 "none";
@@ -276,14 +179,8 @@ form.addEventListener(
                 behavior: "smooth"
             });
 
-        }
 
-
-        // ==================================
-        // ERROR
-        // ==================================
-
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Registration error:",
@@ -291,13 +188,16 @@ form.addEventListener(
             );
 
 
+            // ------------------------------
+            // SHOW ERROR
+            // ------------------------------
+
             errorMessage.style.display =
                 "block";
 
 
             submitButton.disabled =
                 false;
-
 
             submitButton.innerText =
                 "⚡ ASSEMBLE TEAM";
