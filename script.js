@@ -34,6 +34,7 @@ testButton.id = "testSheetButton";
 
 testButton.innerText =
     "🧪 TEST GOOGLE SHEETS";
+testButton.style.display = "none";
 
 
 // Style the test button
