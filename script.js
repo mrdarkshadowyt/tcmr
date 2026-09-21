@@ -9,9 +9,6 @@ const GOOGLE_SCRIPT_URL =
 // ==========================================
 // MAIN PAGE URL
 // ==========================================
-//
-// CHANGE THIS if your main page has a different URL.
-//
 
 const MAIN_PAGE_URL = "index.html";
 
@@ -22,6 +19,51 @@ const MAIN_PAGE_URL = "index.html";
 
 const DISCORD_URL =
     "https://discord.gg/fHHMKfqKj";
+
+
+// ==========================================
+// RANK VALUES
+// ==========================================
+
+const rankValues = {
+
+    "Bronze 3": 1,
+    "Bronze 2": 2,
+    "Bronze 1": 3,
+
+    "Silver 3": 4,
+    "Silver 2": 5,
+    "Silver 1": 6,
+
+    "Gold 3": 7,
+    "Gold 2": 8,
+    "Gold 1": 9,
+
+    "Platinum 3": 10,
+    "Platinum 2": 11,
+    "Platinum 1": 12,
+
+    "Diamond 3": 13,
+    "Diamond 2": 14,
+    "Diamond 1": 15,
+
+    "Grandmaster 3": 16,
+    "Grandmaster 2": 17,
+    "Grandmaster 1": 18,
+
+    "Celestial 3": 19,
+    "Celestial 2": 20,
+    "Celestial 1": 21,
+
+    "Eternity 3": 22,
+    "Eternity 2": 23,
+    "Eternity 1": 24,
+
+    "One Above All 3": 25,
+    "One Above All 2": 26,
+    "One Above All 1": 27
+
+};
 
 
 // ==========================================
@@ -118,7 +160,77 @@ if (form) {
 
 
             // ======================================
-            // SEND DATA TO GOOGLE SHEETS
+            // CALCULATE TEAM AVERAGE
+            // 6 MAIN PLAYERS ONLY
+            // ======================================
+
+            const playerRanks = [
+
+                data.player1Rank,
+                data.player2Rank,
+                data.player3Rank,
+                data.player4Rank,
+                data.player5Rank,
+                data.player6Rank
+
+            ];
+
+
+            let totalRank = 0;
+
+            let validPlayers = 0;
+
+
+            playerRanks.forEach(
+                function (rank) {
+
+                    if (
+                        rank &&
+                        rankValues[rank]
+                    ) {
+
+                        totalRank +=
+                            rankValues[rank];
+
+                        validPlayers++;
+
+                    }
+
+                }
+            );
+
+
+            let teamAverageRank = 0;
+
+
+            if (validPlayers > 0) {
+
+                teamAverageRank =
+                    totalRank / validPlayers;
+
+            }
+
+
+            // ======================================
+            // ROUND AVERAGE TO 2 DECIMAL PLACES
+            // ======================================
+
+            teamAverageRank =
+                Number(
+                    teamAverageRank.toFixed(2)
+                );
+
+
+            // ======================================
+            // ADD AVERAGE TO DATA
+            // ======================================
+
+            data.teamAverageRank =
+                teamAverageRank;
+
+
+            // ======================================
+            // SEND TO GOOGLE SHEETS
             // ======================================
 
             try {
@@ -142,7 +254,7 @@ if (form) {
 
 
                 // ==================================
-                // REGISTRATION SUCCESS
+                // SHOW SUCCESS
                 // ==================================
 
                 form.style.display =
@@ -156,7 +268,7 @@ if (form) {
 
 
                     // ==================================
-                    // BACK TO MAIN PAGE LINK
+                    // BACK TO MAIN PAGE
                     // ==================================
 
                     const backLink =
@@ -188,30 +300,6 @@ if (form) {
 
                     backLink.style.letterSpacing =
                         "1px";
-
-
-                    // Hover effect
-
-                    backLink.addEventListener(
-                        "mouseenter",
-                        function () {
-
-                            backLink.style.textDecoration =
-                                "underline";
-
-                        }
-                    );
-
-
-                    backLink.addEventListener(
-                        "mouseleave",
-                        function () {
-
-                            backLink.style.textDecoration =
-                                "none";
-
-                        }
-                    );
 
 
                     // ==================================
@@ -258,32 +346,8 @@ if (form) {
                         "1px";
 
 
-                    // Hover effect
-
-                    discordLink.addEventListener(
-                        "mouseenter",
-                        function () {
-
-                            discordLink.style.textDecoration =
-                                "underline";
-
-                        }
-                    );
-
-
-                    discordLink.addEventListener(
-                        "mouseleave",
-                        function () {
-
-                            discordLink.style.textDecoration =
-                                "none";
-
-                        }
-                    );
-
-
                     // ==================================
-                    // ADD LINKS TO SUCCESS MESSAGE
+                    // ADD LINKS
                     // ==================================
 
                     successMessage.appendChild(
@@ -298,7 +362,7 @@ if (form) {
 
 
                 // ==================================
-                // SCROLL TO SUCCESS MESSAGE
+                // SCROLL TOP
                 // ==================================
 
                 window.scrollTo({
